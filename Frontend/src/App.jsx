@@ -1,5 +1,5 @@
 import './App.css'
-import Navbar from './components/Navbar.jsx/Navbar'
+import Navbar from './components/Navbar.jsx/Navbar.jsx'
 import AllRoutes from './Routes/routes'
 import FloatingControls from './components/FloatingControls/FloatingControls'
 import AmbientBackground from './components/AmbientBackground/AmbientBackground'
