@@ -72,10 +72,36 @@ export const saveUserData = (data) => (dispatch) => {
     dispatch({ type: SAVE_USER_DATA, payload: data })
 }
 
+const CACHE_DURATION = 10 * 60 * 1000
+
+const getCachedData = (key) => {
+    const cached = localStorage.getItem(key)
+    if (cached) {
+        const { data, timestamp } = JSON.parse(cached)
+        if (Date.now() - timestamp < CACHE_DURATION) {
+            return data
+        }
+    }
+    return null
+}
+
+const setCachedData = (key, data) => {
+    localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }))
+}
+
 export const getWeather = (city) => (dispatch) => {
     dispatch({ type: GET_WEATHER_REQ })
+    const cacheKey = `weather_${city.toLowerCase()}`
+    const cached = getCachedData(cacheKey)
+
+    if (cached) {
+        dispatch({ type: GET_WEATHER_SUCCESS, payload: cached })
+        return
+    }
+
     return axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
         .then((res) => {
+            setCachedData(cacheKey, res.data)
             dispatch({ type: GET_WEATHER_SUCCESS, payload: res.data })
         })
         .catch((err) => {
@@ -85,8 +111,17 @@ export const getWeather = (city) => (dispatch) => {
 
 export const getWeatherByCoords = (lat, lon) => (dispatch) => {
     dispatch({ type: GET_WEATHER_REQ })
+    const cacheKey = `weather_${lat}_${lon}`
+    const cached = getCachedData(cacheKey)
+
+    if (cached) {
+        dispatch({ type: GET_WEATHER_SUCCESS, payload: cached })
+        return
+    }
+
     return axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
         .then((res) => {
+            setCachedData(cacheKey, res.data)
             dispatch({ type: GET_WEATHER_SUCCESS, payload: res.data })
         })
         .catch((err) => {
@@ -107,8 +142,17 @@ export const searchCity = (query) => (dispatch) => {
 
 export const getForecast = (lat, lon) => (dispatch) => {
     dispatch({ type: GET_FORECAST_REQ })
+    const cacheKey = `forecast_${lat}_${lon}`
+    const cached = getCachedData(cacheKey)
+
+    if (cached) {
+        dispatch({ type: GET_FORECAST_SUCCESS, payload: cached })
+        return
+    }
+
     return axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
         .then((res) => {
+            setCachedData(cacheKey, res.data)
             dispatch({ type: GET_FORECAST_SUCCESS, payload: res.data })
         })
         .catch((err) => {

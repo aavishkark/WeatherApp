@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getFavorites, removeFavorite, addFavorite } from '../../redux/actions'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import CircularProgress from '@mui/material/CircularProgress'
+
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { formatTemp } from '../../utils/weatherUtils'
+import { formatTemp, isDaytime, getMoonPhase } from '../../utils/weatherUtils'
+import WeatherLoader from '../../components/Loading/WeatherLoader'
 
 const countryCities = {
     IN: ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad'],
@@ -63,13 +64,13 @@ const Favorites = () => {
     if (isLoading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-                <CircularProgress size={24} />
+                <WeatherLoader />
             </Box>
         )
     }
 
     return (
-        <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+        <Box sx={{ p: 3, pt: 10, maxWidth: 600, mx: 'auto' }}>
             {favorites && favorites.length > 0 && (
                 <Box sx={{
                     display: 'grid',
@@ -126,26 +127,31 @@ const Favorites = () => {
                                         {weather ? formatTemp(weather.main?.temp, celsius) : '—'}°
                                     </Typography>
                                     {iconCode && (
-                                        <img
-                                            src={`https://openweathermap.org/img/wn/${iconCode}@2x.png`}
-                                            alt=""
-                                            style={{ width: 50, height: 50, marginRight: -8 }}
-                                        />
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Typography sx={{ fontSize: '1.5rem', mr: 1, lineHeight: 1 }}>
+                                                {isDaytime(weather.dt, weather.sys?.sunrise, weather.sys?.sunset)
+                                                    ? '☀️'
+                                                    : getMoonPhase(new Date())}
+                                            </Typography>
+                                            <img
+                                                src={`https://openweathermap.org/img/wn/${iconCode}@2x.png`}
+                                                alt=""
+                                                style={{ width: 50, height: 50, marginRight: -8 }}
+                                            />
+                                        </Box>
                                     )}
                                 </Box>
                                 {weather && (
-                                    <Box sx={{
-                                        display: 'flex',
-                                        gap: 2,
-                                        mt: 2,
-                                        pt: 1.5,
-                                        borderTop: '1px solid #f0f0f0',
-                                        fontSize: '0.75rem',
-                                        color: 'text.secondary'
-                                    }}>
-                                        <span>H: {formatTemp(weather.main?.temp_max, celsius)}°</span>
-                                        <span>L: {formatTemp(weather.main?.temp_min, celsius)}°</span>
-                                        <span style={{ marginLeft: 'auto' }}>Feels {formatTemp(weather.main?.feels_like, celsius)}°</span>
+                                    <Box sx={{ mt: 2, pt: 1.5, borderTop: '1px solid var(--text-secondary)', opacity: 0.8 }}>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'text.secondary', mb: 1 }}>
+                                            <span>H: {formatTemp(weather.main?.temp_max, celsius)}°</span>
+                                            <span>L: {formatTemp(weather.main?.temp_min, celsius)}°</span>
+                                            <span>Feels {formatTemp(weather.main?.feels_like, celsius)}°</span>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'text.secondary' }}>
+                                            <span>💧 {weather.main?.humidity}%</span>
+                                            <span>💨 {weather.wind?.speed} m/s {['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((weather.wind?.deg || 0) / 45) % 8]}</span>
+                                        </Box>
                                     </Box>
                                 )}
                             </Box>

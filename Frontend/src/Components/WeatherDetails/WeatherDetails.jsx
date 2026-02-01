@@ -57,6 +57,18 @@ const WeatherDetails = ({ weather }) => {
                     </Typography>
                 </Box>
             )}
+            <Box className="weather-detail-card">
+                <Typography className="weather-detail-label">Clouds</Typography>
+                <Typography className="weather-detail-value">
+                    {weather.clouds?.all}%
+                </Typography>
+            </Box>
+            <Box className="weather-detail-card">
+                <Typography className="weather-detail-label">Dew Point</Typography>
+                <Typography className="weather-detail-value">
+                    {formatTemp(weather.main?.temp - ((100 - weather.main?.humidity) / 5), celsius)}°
+                </Typography>
+            </Box>
         </Box>
     )
 }

@@ -20,7 +20,9 @@
     display: flex;
     justify-content: space-between;
     overflow-x: auto;
+    overflow-y: hidden;
     gap: 12px;
+    padding: 4px;
 }
 
 .forecast-item {
@@ -39,6 +41,7 @@
 .forecast-icon {
     width: 40px;
     height: 40px;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
 }
 
 .forecast-temp {

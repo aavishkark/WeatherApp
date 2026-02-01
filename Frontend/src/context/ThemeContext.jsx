@@ -9,7 +9,7 @@ export const useThemeMode = () => useContext(ThemeContext)
 export const ThemeProvider = ({ children }) => {
     const [mode, setMode] = useState(() => {
         const saved = localStorage.getItem('weatherAppTheme')
-        return saved || 'light'
+        return saved || 'dark'
     })
 
     useEffect(() => {

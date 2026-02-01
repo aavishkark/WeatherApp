@@ -49,50 +49,112 @@ const Navbar = () => {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {menuItems.filter(item => item.show).map((item) => (
+                {menuItems.filter(item => item.show && item.text !== 'Settings').map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <ListItemButton component={RouterLink} to={item.path}>
                             <ListItemText primary={item.text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
-                {auth && (
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={handleLogout}>
-                            <ListItemText primary="Logout" />
-                        </ListItemButton>
-                    </ListItem>
-                )}
             </List>
         </Box>
     )
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{ backgroundColor: '#1a365d' }}>
-                <Toolbar>
+            <AppBar position="fixed" sx={{
+                top: 0,
+                left: 0,
+                width: '100%',
+                zIndex: 1200,
+                background: 'transparent',
+                backdropFilter: 'blur(10px)',
+                boxShadow: 'none',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                transition: 'all 0.3s ease',
+                '[data-theme="dark"] &': {
+                    background: 'transparent',
+                    backdropFilter: 'none',
+                    borderBottom: 'none'
+                }
+            }}>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Typography
                         variant="h6"
                         component={RouterLink}
                         to="/"
-                        sx={{ flexGrow: 1, textDecoration: 'none', color: 'white' }}
+                        sx={{
+                            textDecoration: 'none',
+                            fontWeight: 800,
+                            letterSpacing: -0.5,
+                            fontSize: '1.8rem',
+                            fontFamily: '"Outfit", "Roboto", sans-serif',
+                            background: 'linear-gradient(135deg, #004aad 0%, #0060d4 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            transition: 'opacity 0.2s',
+                            '&:hover': { opacity: 0.8 },
+                            '[data-theme="dark"] &': {
+                                background: 'linear-gradient(135deg, #4fd1c5 0%, #63b3ed 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                            }
+                        }}
                     >
-                        WeatherApp
+                        Currents
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <Button color="inherit" component={RouterLink} to="/">Home</Button>
-                        <Button color="inherit" component={RouterLink} to="/favorites">Favorites</Button>
-                        {auth && <Button color="inherit" component={RouterLink} to="/settings">Settings</Button>}
-                        {auth && <Button color="inherit" onClick={handleLogout}>Logout</Button>}
-                        {!auth && <Button color="inherit" component={RouterLink} to="/login">Login</Button>}
+
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+                        {[
+                            { text: 'Home', path: '/' },
+                            { text: 'Favorites', path: '/favorites' },
+                            ...(auth ? [] : [{ text: 'Login', path: '/login' }])
+                        ].map((item) => (
+                            <Button
+                                key={item.text}
+                                color="inherit"
+                                component={RouterLink}
+                                to={item.path}
+                                sx={{
+                                    fontWeight: 500,
+                                    textTransform: 'none',
+                                    fontSize: '1rem',
+                                    borderRadius: 2,
+                                    px: 2,
+                                    color: 'text.primary',
+                                    transition: 'all 0.2s',
+                                    '[data-theme="dark"] &': {
+                                        color: 'rgba(255,255,255,0.9)'
+                                    },
+                                    '&:hover': {
+                                        color: 'primary.main',
+                                        backgroundColor: 'rgba(0,0,0,0.05)',
+                                        transform: 'translateY(-1px)',
+                                        '[data-theme="dark"] &': {
+                                            color: '#b2f5ea',
+                                            backgroundColor: 'rgba(255,255,255,0.1)'
+                                        }
+                                    }
+                                }}
+                            >
+                                {item.text}
+                            </Button>
+                        ))}
                     </Box>
+
                     <IconButton
                         size="large"
                         edge="end"
                         color="inherit"
                         aria-label="menu"
                         onClick={toggleDrawer(true)}
-                        sx={{ display: { xs: 'flex', md: 'none' } }}
+                        sx={{
+                            display: { xs: 'flex', md: 'none' },
+                            color: 'text.primary'
+                        }}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -102,8 +164,51 @@ const Navbar = () => {
                 anchor="right"
                 open={drawerOpen}
                 onClose={toggleDrawer(false)}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        backdropFilter: 'blur(10px)',
+                        color: 'text.primary',
+                        width: 250,
+                        '[data-theme="dark"] &': {
+                            backgroundColor: 'transparent',
+                            backdropFilter: 'none',
+                            color: 'white'
+                        }
+                    }
+                }}
             >
-                {drawerList()}
+                <Box
+                    role="presentation"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
+                    <List sx={{ pt: 4 }}>
+                        {[
+                            { text: 'Home', path: '/' },
+                            { text: 'Favorites', path: '/favorites' },
+                            ...(auth ? [] : [{ text: 'Login', path: '/login' }])
+                        ].map((item) => (
+                            <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
+                                <ListItemButton
+                                    component={RouterLink}
+                                    to={item.path}
+                                    sx={{
+                                        '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' }
+                                    }}
+                                >
+                                    <ListItemText
+                                        primary={item.text}
+                                        primaryTypographyProps={{
+                                            fontWeight: 500,
+                                            textAlign: 'center'
+                                        }}
+                                    />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
             </Drawer>
         </Box>
     )
