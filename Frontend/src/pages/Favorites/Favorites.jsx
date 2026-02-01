@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { formatTemp, isDaytime, getMoonPhase } from '../../utils/weatherUtils'
-import WeatherLoader from '../../components/Loading/WeatherLoader'
+import WeatherLoader from '../../Components/Loading/WeatherLoader'
 
 const countryCities = {
     IN: ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad'],

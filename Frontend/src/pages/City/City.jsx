@@ -11,11 +11,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import axios from 'axios'
-import WeatherDetails from '../../components/WeatherDetails/WeatherDetails'
-import Forecast from '../../components/Forecast/Forecast'
-import WeatherChart from '../../components/WeatherChart/WeatherChart'
+import WeatherDetails from '../../Components/WeatherDetails/WeatherDetails'
+import Forecast from '../../Components/Forecast/Forecast'
+import WeatherChart from '../../Components/WeatherChart/WeatherChart'
 import { formatTemp, isDaytime, getMoonPhase } from '../../utils/weatherUtils'
-import WeatherLoader from '../../components/Loading/WeatherLoader'
+import WeatherLoader from '../../Components/Loading/WeatherLoader'
 
 const City = () => {
     const { name } = useParams()
