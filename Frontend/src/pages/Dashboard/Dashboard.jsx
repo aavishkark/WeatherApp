@@ -17,7 +17,7 @@ import Paper from '@mui/material/Paper'
 import Divider from '@mui/material/Divider'
 import { getWeather, getWeatherByCoords } from '../../redux/actions'
 import WeatherLoader from '../../components/Loading/WeatherLoader'
-import SearchBar from '../../Components/SearchBar/SearchBar'
+import SearchBar from '../../components/SearchBar/SearchBar'
 
 const Dashboard = () => {
     const dispatch = useDispatch()

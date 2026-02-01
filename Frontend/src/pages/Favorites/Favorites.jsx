@@ -11,7 +11,7 @@ import MapIcon from '@mui/icons-material/Map'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import WeatherLoader from '../../components/Loading/WeatherLoader'
-import SearchBar from '../../Components/SearchBar/SearchBar'
+import SearchBar from '../../components/SearchBar/SearchBar'
 
 const countryCities = {
     IN: ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad'],

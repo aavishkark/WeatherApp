@@ -15,7 +15,7 @@ import Tooltip from '@mui/material/Tooltip'
 import axios from 'axios'
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails'
 import Forecast from '../../components/Forecast/Forecast'
-import WeatherChart from '../../Components/WeatherChart/WeatherChart'
+import WeatherChart from '../../components/WeatherChart/WeatherChart'
 import { formatTemp, isDaytime, getMoonPhase } from '../../utils/weatherUtils'
 import WeatherLoader from '../../components/Loading/WeatherLoader'
 

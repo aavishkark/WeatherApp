@@ -1,8 +1,8 @@
 import './App.css'
-import Navbar from './Components/Navbar.jsx/Navbar'
+import Navbar from './components/Navbar.jsx/Navbar'
 import AllRoutes from './Routes/routes'
-import FloatingControls from './Components/FloatingControls/FloatingControls'
-import AmbientBackground from './Components/AmbientBackground/AmbientBackground'
+import FloatingControls from './components/FloatingControls/FloatingControls'
+import AmbientBackground from './components/AmbientBackground/AmbientBackground'
 
 function App() {
   return (
